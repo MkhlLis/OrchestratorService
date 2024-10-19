@@ -1,4 +1,7 @@
 using System.Reflection;
+using Orchestrator.Contracts.Interfaces;
+using Orchestrator.Handlers;
+using Orchestrator.Stores;
 
 namespace Orchestrator;
 
@@ -42,7 +45,8 @@ public class Startup
 
     private static IServiceCollection Configure(IServiceCollection services)
     {
-        // services.AddScoped<IAdministrationCommandHandler, AdministrationCommandHandler>();
+        services.AddSingleton<IStore, InMemoryStore>();
+        services.AddScoped<IOrchestratorHandler, OrchestratorHandler>();
         return services;
     }
 }
