@@ -1,6 +1,8 @@
 ## **Оркерстратор.**
 (ссылка на сервис Monitoring https://github.com/MkhlLis/MonitoringService/tree/master)
 
+Взаимодействие между МС -- REST запросы
+
 Реализация хранилища InMemory (InMemoryStore.cs)
 ```
 private readonly List<CustomerInfo> _customers = new();
