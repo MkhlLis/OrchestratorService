@@ -7,7 +7,9 @@ namespace Orchestrator.Contracts.Interfaces;
 /// </summary>
 public interface IStore
 {
-    Task AddNewOrderAsync(Order order, CancellationToken cancellationToken);
+    Task AddNewOrderAsync(OrderBase orderBase, CancellationToken cancellationToken);
     
     Task<IEnumerable<BookingRequest>> GetAllRequests(CancellationToken cancellationToken);
+    
+    Task OrderEvent(OrderBase orderBase, CancellationToken cancellationToken);
 }

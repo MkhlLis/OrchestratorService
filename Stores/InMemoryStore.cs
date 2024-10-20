@@ -23,15 +23,20 @@ public class InMemoryStore : IStore
         });
     }
     
-    public async Task AddNewOrderAsync(Order order, CancellationToken cancellationToken)
+    public async Task AddNewOrderAsync(OrderBase orderBase, CancellationToken cancellationToken)
     {
-        await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
-        _orders.Add(order);
+        await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+        _orders.Add(new Order
+        {
+            CustomerId = orderBase.CustomerId,
+            Title = orderBase.Title,
+            Priority = 0,
+        });
     }
 
     public async Task<IEnumerable<BookingRequest>> GetAllRequests(CancellationToken cancellationToken)
     {
-        await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+        await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
         var bookingRequests = new List<BookingRequest>();
         var titles = _orders.Select(x => x.Title).Distinct();
         foreach (var title in titles)
@@ -41,6 +46,7 @@ public class InMemoryStore : IStore
                 Title = title,
                 Customers = _orders
                     .Where(x => x.Title == title)
+                    .OrderBy(x => x.Priority)
                     .Join(_customers,
                     order => order.CustomerId,
                     customer => customer.Id,
@@ -48,5 +54,11 @@ public class InMemoryStore : IStore
             });
         }
         return bookingRequests;
+    }
+
+    public async Task OrderEvent(OrderBase orderBase, CancellationToken cancellationToken)
+    {
+        await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+        _orders.Single(x => x.Title == orderBase.Title && x.CustomerId == orderBase.CustomerId).Priority += 1;
     }
 }

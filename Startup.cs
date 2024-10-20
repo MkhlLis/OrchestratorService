@@ -1,6 +1,9 @@
 using System.Reflection;
 using Orchestrator.Contracts.Interfaces;
+using Orchestrator.Contracts.Models;
 using Orchestrator.Handlers;
+using Orchestrator.Mappers;
+using Orchestrator.Services;
 using Orchestrator.Stores;
 
 namespace Orchestrator;
@@ -46,7 +49,10 @@ public class Startup
     private static IServiceCollection Configure(IServiceCollection services)
     {
         services.AddSingleton<IStore, InMemoryStore>();
+        services.AddHttpClient<IOrchestratorHandler, OrchestratorHandler>();
         services.AddScoped<IOrchestratorHandler, OrchestratorHandler>();
+        services.AddSingleton<IProduceEventService, ProduceEventService>();
+        services.AddSingleton<IEventMapper<BookingRequest, BookingRequestEvent>, EventMapper>();
         return services;
     }
 }

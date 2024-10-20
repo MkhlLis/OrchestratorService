@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Orchestrator.Contracts.Interfaces;
 using Orchestrator.Contracts.Models;
@@ -19,9 +20,9 @@ public class OrchestratorController
     }
 
     [HttpPost("add-new-order")]
-    public async Task AddNewOrder(Order order, CancellationToken cancellationToken)
+    public async Task AddNewOrder(OrderBase orderBase, CancellationToken cancellationToken)
     {
-        await _handler.AddNewOrderAsync(order, cancellationToken);
+        await _handler.AddNewOrderAsync(orderBase, cancellationToken);
     }
 
     [HttpGet("get-all-orders")]
@@ -34,5 +35,11 @@ public class OrchestratorController
     public async Task SendRequestsToMonitoring(CancellationToken cancellationToken)
     {
         await _handler.SendRequestsToMonitoring(cancellationToken);
+    }
+
+    [HttpPost("order-event")]
+    public async Task OrderEvent([FromBody] OrderBase orderBase, CancellationToken cancellationToken)
+    {
+        await _handler.OrderEvent(orderBase, cancellationToken);
     }
 }
