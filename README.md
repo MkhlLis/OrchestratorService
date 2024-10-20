@@ -30,3 +30,5 @@ API Реализует
 
 
 ![Recording.gif](Recording.gif)
+
+TODO: Реализация шаблонная, не претендует на готовую. CircuitBreaker, да и много еще чего. 
